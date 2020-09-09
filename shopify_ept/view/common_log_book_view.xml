@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="action_common_log_book_ept_shopify" model="ir.actions.act_window">
+            <field name="name">Common Log Book</field>
+            <field name="res_model">common.log.book.ept</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('shopify_instance_id','=',active_id)]</field>
+        </record>
+
+        <record id="action_common_log_book_ept_shopify_instances" model="ir.actions.act_window">
+            <field name="name">Shopify Common Log Book</field>
+            <field name="res_model">common.log.book.ept</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('shopify_instance_id','!=',False)]</field>
+        </record>
+
+        <record id="common_log_book_shopify_search_view_ept" model="ir.ui.view">
+            <field name="name">Common Log Search View</field>
+            <field name="model">common.log.book.ept</field>
+            <field name="type">search</field>
+            <field name="arch" type="xml">
+                <search string="Common Logs">
+                    <field name="name"/>
+                    <field name="type"/>
+                    <group expand="0" string="Group By...">
+                        <filter name="instance" string="Instance" icon="terp-personal"
+                                context="{'group_by': 'shopify_instance_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+    </data>
+</odoo>

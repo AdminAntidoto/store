@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+	<data noupdate="1">
+		<!-- This is used for create a product queue data sequence, created by 
+			Haresh Mori @ Emipro -->
+		<record id="seq_product_queue_data" model="ir.sequence">
+			<field name="name">Sequence Product Queue Data</field>
+			<field name="code">shopify.product.data.queue.ept</field>
+			<field name="prefix">PQD</field>
+			<field name="padding">6</field>
+			<field name="number_next">1</field>
+			<field name="number_increment">1</field>
+			<field name="company_id" eval="False" />
+		</record>
+
+		<!-- This is used for create a Order queue data sequence, created by Haresh 
+			Mori @ Emipro -->
+		<record id="seq_order_queue_data" model="ir.sequence">
+			<field name="name">Sequence Order Queue Data</field>
+			<field name="code">shopify.order.data.queue.ept</field>
+			<field name="prefix">OQD</field>
+			<field name="padding">6</field>
+			<field name="number_next">1</field>
+			<field name="number_increment">1</field>
+			<field name="company_id" eval="False" />
+		</record>
+
+		<!-- Create Sequence while Import Customers, Code written by Angel Patel 
+			@ Emipro -->
+		<record id="seq_synced_shopify_customer_sequence" model="ir.sequence">
+			<field name="name">Sequence Synced Shopify Customer Sequence</field>
+			<field name="code">shopify.customer.data.queue.ept</field>
+			<field name="prefix">CQD</field>
+			<field name="padding">6</field>
+			<field name="company_id" eval="False" />
+		</record>
+
+		<!--Payout Transaction Record Sequence
+		    Created By : Deval Jagad-->
+		<record id="seq_import_payout_report" model="ir.sequence">
+			<field name="name">Sequence Payout Report</field>
+			<field name="code">import.payout.report.ept</field>
+			<field name="prefix">PTR</field>
+			<field name="padding">5</field>
+			<field name="company_id" eval="False"/>
+		</record>
+	</data>
+</odoo>

@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!--This is a comman view for queue process wizard-->
+        <record id="view_queue_process_action" model="ir.ui.view">
+            <field name="name">Queue Process Action</field>
+            <field name="model">shopify.queue.process.ept</field>
+            <field name="priority">11</field>
+            <field name="arch" type="xml">
+                <form string="Manually Queue Process">
+                    <sheet>
+                        <group name='shopify_process_queue_manually'>
+                                <p colspan="2" class="alert alert-warning" role="alert">
+                                    <b>
+                                        <ol>
+                                            <li>
+                                                You can use this option:<br/>
+                                                - If you don't want to wait for the cron to execute the queue and want to process the queue instantly.<br/>
+                                                - If a queue line failed for any reason and if you
+                                                think by making required changes in Odoo it can process it successfully, you can try this option.
+                                            </li>
+                                            <li>
+                                                This will not fetch any data from the Shopify store to reprocess it.
+                                            </li>
+                                            <li>
+                                                This process might take some time to complete.
+                                            </li>
+                                        </ol>
+                                    </b>
+                                </p>
+                            </group>
+                        <footer>
+                            <button string="Process Queues Manually" class="oe_highlight"
+                                    type="object" name="manual_queue_process"
+                                    invisible="context.get('queue_process','') not in ['process_product_queue_manually','process_customer_queue_manually','process_order_queue_manually']"/>
+                            <button string="Cancel" class="oe_highlight" special="cancel"/>
+                        </footer>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!--This is a comman view for set completed queue-->
+        <record id="view_set_to_completed_queue_process_action" model="ir.ui.view">
+            <field name="name">Set To Completed Queue Action</field>
+            <field name="model">shopify.queue.process.ept</field>
+            <field name="priority">11</field>
+            <field name="arch" type="xml">
+                <form string="Set To Completed">
+                    <sheet>
+                        <group name='set_to_completed_queue'>
+                            <div style="color:#000000">
+                                <p class="alert alert-warning" role="alert">
+                                    <u>
+                                        <h3 style="font-weight:bold;color:#7d5a29">Note :</h3>
+                                    </u>
+                                    <li>
+                                        It will cancel all queue lines which are draft and failed
+                                        state.
+                                    </li>
+                                </p>
+                            </div>
+                        </group>
+                        <footer>
+                            <button string="Set To Completed Manually" class="oe_highlight"
+                                    type="object" name="set_to_completed_queue"/>
+                            <button string="Cancel" class="oe_highlight" special="cancel"/>
+                        </footer>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!--This is a comman view for queue process wizard-->
+<!--        <record id="view_of_help_webhook" model="ir.ui.view">-->
+<!--            <field name="name">Help Action</field>-->
+<!--            <field name="model">shopify.queue.process.ept</field>-->
+<!--            <field name="priority">11</field>-->
+<!--            <field name="arch" type="xml">-->
+<!--                <form string="Help Of Webhook">-->
+<!--                    <sheet>-->
+<!--                        <group name='Order Webhook help'>-->
+<!--                            <p colspan="2" class="alert alert-warning" role="alert">-->
+<!--                                <b>-->
+<!--                                    <ol>-->
+<!--                                        <li>-->
+<!--                                            Active: It means the webhook connection is active-->
+<!--                                            between Odoo and Shopify for Webhook.-->
+<!--                                        </li>-->
+<!--                                        <li>-->
+<!--                                            Inactive: It means the webhook connection is inactive-->
+<!--                                            between Odoo and Shopify for Webhook.-->
+<!--                                        </li>-->
+<!--                                        <li>-->
+<!--                                            If active webhook, when trigger an action in your-->
+<!--                                            Shopify store, system will create data queues and-->
+<!--                                            process automatically in Odoo. you can see data queue-->
+<!--                                            here: Shopify => Data queues.-->
+<!--                                        </li>-->
+<!--                                        <li>-->
+<!--                                            If Data queues failed when system automatically-->
+<!--                                            process, then-->
+<!--                                            you can see failed reason here: Shopify => Data-->
+<!--                                            queues => select one action(Ex. Order Data Queues) =>-->
+<!--                                            Open queue => Log Lines-->
+<!--                                        </li>-->
+<!--                                        <li>-->
+<!--                                            If you want to reprocess queue when the queue line is-->
+<!--                                            failed you can use the 'PROCESS QUEUE MANUALLY' button-->
+<!--                                            in the queue. you can see here: Shopify => Data-->
+<!--                                            queues => Order Data Queues => PROCESS QUEUE MANUALLY-->
+<!--                                        </li>-->
+<!--                                    </ol>-->
+<!--                                </b>-->
+<!--                            </p>-->
+<!--                        </group>-->
+<!--                        <footer>-->
+<!--                            <button string="Process Queues Manually" class="oe_highlight"-->
+<!--                                    type="object" name="manual_queue_process"-->
+<!--                                    invisible="context.get('queue_process','') not in ['process_product_queue_manually','process_customer_queue_manually','process_order_queue_manually']"/>-->
+<!--                            <button string="Cancel" class="oe_highlight" special="cancel"/>-->
+<!--                        </footer>-->
+<!--                    </sheet>-->
+<!--                </form>-->
+<!--            </field>-->
+<!--        </record>-->
+
+        <!--This action used for sync product queue data manually Haresh @ Emipro
+            on date 30/10/2019 -->
+        <act_window name="Process Queue Manually" res_model="shopify.queue.process.ept"
+                    target="new" id="action_sync_product_queue_data"
+                    view_id="view_queue_process_action"
+                    context="{'queue_process':'process_product_queue_manually'}"/>
+
+        <act_window name="Process Queue Manually" res_model="shopify.queue.process.ept"
+                    target="new" id="action_wizard_shopify_import_customer"
+                    view_id="view_queue_process_action"
+                    context="{'queue_process':'process_customer_queue_manually'}"/>
+
+        <act_window name="Process Queue Manually" res_model="shopify.queue.process.ept"
+                    target="new" id="action_wizard_shopify_import_order"
+                    view_id="view_queue_process_action"
+                    context="{'queue_process':'process_order_queue_manually'}"/>
+        <!--This action for manully cancel or done order queue-->
+        <act_window name="Set To Completed" res_model="shopify.queue.process.ept"
+                    target="new" id="action_wizard_set_to_completed_order_queue"
+                    view_id="view_set_to_completed_queue_process_action"
+                    context="{'queue_process':'set_to_completed_order_queue'}"/>
+
+        <!--This action for manully cancel or done product queue-->
+        <act_window name="Set To Completed" res_model="shopify.queue.process.ept"
+                    target="new" id="action_wizard_set_to_completed_product_queue"
+                    view_id="view_set_to_completed_queue_process_action"
+                    context="{'queue_process':'set_to_completed_product_queue'}"/>
+
+        <!--This action for manully cancel or done customer queue-->
+        <act_window name="Set To Completed" res_model="shopify.queue.process.ept"
+                    target="new" id="action_wizard_set_to_completed_customer_queue"
+                    view_id="view_set_to_completed_queue_process_action"
+                    context="{'queue_process':'set_to_completed_customer_queue'}"/>
+
+<!--        #This action for view of webhook help-->
+<!--        <act_window name="Information" res_model="shopify.queue.process.ept"-->
+<!--                    target="new" id="action_help_of_order_webhook_wizard"-->
+<!--                    view_id="view_of_help_webhook"-->
+<!--                    context="{'help_type':'order_webhook'}"/>-->
+
+    </data>
+</odoo>
