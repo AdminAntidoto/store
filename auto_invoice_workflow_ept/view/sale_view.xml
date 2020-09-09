@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="view_order_form_ext">
+            <field name="name">View Order Form Ext</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <data>
+                    <field name="fiscal_position_id" options="{'no_create': True}" position="after">
+                        <field name="auto_workflow_process_id"/>
+                    </field>
+                </data>
+            </field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data noupdate="1">
+	<!--This is used for process the product queue data line "Parent Cron". 
+		Created by Haresh Mori -->
+	<record id="ir_cron_parent_to_process_product_queue_line" model="ir.cron">
+		<field name="name">Shopify: Parent Products Queue Cron</field>
+		<field name="model_id" ref="model_shopify_product_data_queue_line_ept" />
+		<field name="state">code</field>
+		<field name="code">model.auto_start_child_process_for_product_queue()
+		</field>
+		<field name="user_id" ref="base.user_root" />
+		<field name="interval_number">1</field>
+		<field name="interval_type">minutes</field>
+		<field name="numbercall">-1</field>
+	</record>
+
+	<!--This is used for process the product queue data line "Child Cron". Created 
+		by Haresh Mori -->
+	<record id="ir_cron_child_to_process_product_queue_line" model="ir.cron">
+		<field name="name">Shopify: Child Products Queue Cron</field>
+		<field name="model_id" ref="model_shopify_product_data_queue_line_ept" />
+		<field name="state">code</field>
+		<field name="code">model.auto_import_product_queue_line_data()</field>
+		<field name="user_id" ref="base.user_root" />
+		<field name="interval_number">10</field>
+		<field name="interval_type">minutes</field>
+		<field name="numbercall">1</field>
+	</record>
+
+	<!--This is used for process the Order queue data "Parent Cron". 
+		Created by Haresh Mori -->
+	<record id="ir_cron_parent_to_process_order_queue_data" model="ir.cron">
+		<field name="name">Shopify: Parent Orders Queue Cron</field>
+		<field name="model_id" ref="model_shopify_order_data_queue_line_ept" />
+		<field name="state">code</field>
+		<field name="code">model.auto_start_child_process_for_order_queue()
+		</field>
+		<field name="user_id" ref="base.user_root" />
+		<field name="interval_number">1</field>
+		<field name="interval_type">minutes</field>
+		<field name="numbercall">-1</field>
+	</record>
+
+	<!--This is used for process the Order queue data "Child Cron". Created 
+		by Haresh Mori -->
+	<record id="ir_cron_child_to_process_order_queue" model="ir.cron">
+		<field name="name">Shopify: Child Orders Queue Cron</field>
+		<field name="model_id" ref="model_shopify_order_data_queue_line_ept" />
+		<field name="state">code</field>
+		<field name="code">model.auto_import_order_queue_data()</field>
+		<field name="user_id" ref="base.user_root" />
+		<field name="interval_number">15</field>
+		<field name="interval_type">minutes</field>
+		<field name="numbercall">1</field>
+	</record>
+
+    <!--cron for create customer in odoo, written by Angel Patel | Emipro-->
+    <record id="ir_cron_child_to_process_shopify_synced_customer_data" model="ir.cron">
+        <field name="name">Shopify: Child Process Customer Queue</field>
+        <field name="model_id" ref="model_shopify_customer_data_queue_line_ept"/>
+        <field name="state">code</field>
+        <field name="code">model.sync_shopify_customer_into_odoo()</field>
+        <field name="user_id" ref="base.user_root"/>
+        <field name="interval_number">10</field>
+        <field name="interval_type">minutes</field>
+        <field name="numbercall">1</field>
+    </record>
+    <record id="ir_cron_parent_to_process_shopify_synced_customer_data" model="ir.cron">
+        <field name="name">Shopify: Parent Process Customer Queue</field>
+        <field name="model_id" ref="model_shopify_customer_data_queue_line_ept"/>
+        <field name="state">code</field>
+        <field name="code">model.to_process_customer_child_cron()</field>
+        <field name="user_id" ref="base.user_root"/>
+        <field name="interval_number">1</field>
+        <field name="interval_type">minutes</field>
+        <field name="numbercall">-1</field>
+    </record>
+
+	<!--auto cron for export inventory stock-->
+	<record id="ir_cron_shopify_auto_export_inventory" model="ir.cron">
+        <field name="name">Shopify Auto Export Stock</field>
+		<field eval="False" name="active"/>
+		<field name="user_id" ref="base.user_root"/>
+		<field name="interval_number">1</field>
+        <field name="interval_type">minutes</field>
+        <field name="numbercall">-1</field>
+		<field name="state">code</field>
+		<field name="doall">False</field>
+        <field name="model_id" ref="model_shopify_process_import_export"/>
+        <field name="code">model.update_stock_in_shopify()</field>
+    </record>
+
+	<!--auto cron for Import Orders-->
+	<record id="ir_cron_shopify_auto_import_order" model="ir.cron">
+        <field name="name">Shopify Auto Import Orders</field>
+		<field eval="False" name="active"/>
+		<field name="user_id" ref="base.user_root"/>
+		<field name="interval_number">1</field>
+        <field name="interval_type">minutes</field>
+        <field name="numbercall">-1</field>
+		<field name="state">code</field>
+		<field name="doall">False</field>
+        <field name="model_id" ref="model_shopify_order_data_queue_ept"/>
+        <field name="code">model.import_order_cron_action()</field>
+    </record>
+
+	<!--auto cron for Update Order Status-->
+	<record id="ir_cron_shopify_auto_update_order_status" model="ir.cron">
+        <field name="name">Shopify Auto Update Order Status</field>
+		<field eval="False" name="active"/>
+		<field name="user_id" ref="base.user_root"/>
+		<field name="interval_number">1</field>
+        <field name="interval_type">minutes</field>
+        <field name="numbercall">-1</field>
+		<field name="state">code</field>
+		<field name="doall">False</field>
+        <field name="model_id" ref="model_shopify_process_import_export"/>
+        <field name="code">model.update_order_status_cron_action()</field>
+    </record>
+
+	<!-- Auto Import Shopify Payout Report
+	Created by Deval Jagad -->
+	<record id="ir_cron_auto_import_payout_report" model="ir.cron">
+		<field name="name">Import Shopify Payout Report</field>
+		<field eval="False" name="active"/>
+		<field name="user_id" ref="base.user_root"/>
+		<field name="interval_number">1</field>
+		<field name="interval_type">days</field>
+		<field name="numbercall">-1</field>
+		<field name="state">code</field>
+		<field name="doall">False</field>
+		<field name="model_id" ref="model_shopify_payout_report_ept"/>
+		<field name="code">model.auto_import_payout_report()</field>
+	</record>
+
+	<!-- Auto Generate Bank Statement from Shopify Payout Report
+        Created by Deval Jagad -->
+	<record id="ir_cron_auto_generate_bank_statement" model="ir.cron">
+		<field name="name">Generate Bank Statement Of Shopify Payout</field>
+		<field eval="False" name="active"/>
+		<field name="user_id" ref="base.user_root"/>
+		<field name="interval_number">1</field>
+		<field name="interval_type">days</field>
+		<field name="numbercall">-1</field>
+		<field name="state">code</field>
+		<field name="doall">False</field>
+		<field name="model_id" ref="model_shopify_payout_report_ept"/>
+		<field name="code">model.auto_generate_bank_statement()</field>
+	</record>
+
+	<!-- Auto Reconcile Bank Statement of Shopify Payout Report
+         Created by Deval Jagad -->
+	<record id="ir_cron_auto_process_bank_statement" model="ir.cron">
+		<field name="name">Process Bank Statement Of Shopify Payout </field>
+		<field eval="False" name="active"/>
+		<field name="user_id" ref="base.user_root"/>
+		<field name="interval_number">1</field>
+		<field name="interval_type">days</field>
+		<field name="numbercall">-1</field>
+		<field name="state">code</field>
+		<field name="doall">False</field>
+		<field name="model_id" ref="model_shopify_payout_report_ept"/>
+		<field name="code">model.auto_process_bank_statement()</field>
+	</record>
+	</data>
+</odoo>

@@ -1,0 +1,8 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_common_log_book_ept,Common Log Book,model_common_log_book_ept,,1,1,1,1
+access_common_log_lines_ept,Common Log Lines,model_common_log_lines_ept,,1,1,1,1
+access_common_product_image_ept,Common Product Image,model_common_product_image_ept,,1,1,1,1
+access_product_template,Product Template,model_product_template,,1,1,1,1
+acess_common_product_brand_ept,Common Product Brand,model_common_product_brand_ept,,1,1,1,1
+access_vendor_stock_ept,Common Vendor Stock Ept,model_vendor_stock_ept,,1,1,1,1
+access_global_channel_ept,global.channel.ept,model_global_channel_ept,,1,1,1,1
