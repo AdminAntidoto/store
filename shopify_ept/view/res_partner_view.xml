@@ -1,0 +1,86 @@
+<?xml version="1.0"?>
+<odoo>
+<!--    <record id="shopify_res_partner_form_view" model="ir.ui.view">-->
+<!--        <field name="name">shopify.res.partner.form.view</field>-->
+<!--        <field name="model">res.partner</field>-->
+<!--        <field name="inherit_id" ref="base.view_partner_form"/>-->
+<!--        <field name="arch" type="xml">-->
+<!--            <xpath expr="//field[@name='property_delivery_carrier_id']" position="before"-->
+<!--                   attrs="{'invisible':[('shopify_customer_id','=',False)]}">-->
+<!--                <field name='shopify_customer_id'/>-->
+<!--                <field name="shopify_instance_id"/>-->
+<!--            </xpath>-->
+<!--        </field>-->
+<!--    </record>-->
+<!--    <record id="shopify_res_partner_view_search" model="ir.ui.view">-->
+<!--        <field name="name">shopify.res.partner.search.inherit</field>-->
+<!--        <field name="model">res.partner</field>-->
+<!--        <field name="inherit_id" ref="base.view_res_partner_filter"/>-->
+<!--        <field name="arch" type="xml">-->
+<!--            <search>-->
+<!--                <filter string="In Active" name="active" domain="[('active', '=', False )]"/>-->
+<!--                    <filter string="Instance" name="shopify_instance_id" domain="[('shopify_instance_id','!=', False)]"/>-->
+<!--                    <group expand="0" string="Group By">-->
+<!--                        <filter string="Instance" name="shopify_instance_id" context="{'group_by':'shopify_instance_id'}"/>-->
+<!--                    </group>-->
+<!--            </search>-->
+<!--        </field>-->
+<!--    </record>-->
+    <record id="view_shopify_partner_tree" model="ir.ui.view">
+        <field name="name">res.partner.tree</field>
+        <field name="model">res.partner</field>
+        <field eval="100" name="priority"/>
+        <field name="arch" type="xml">
+            <tree string="Contacts" create="false">
+                <field name="name"/>
+<!--                <field name="function" invisible="1"/>-->
+                <field name="phone"/>
+                <field name="email"/>
+<!--                <field name="user_id" invisible="1"/>-->
+<!--                <field name="company_id" invisible="1"/>-->
+<!--                <field name="is_company" invisible="1"/>-->
+<!--                <field name="country_id" invisible="1"/>-->
+<!--                <field name="parent_id" invisible="1"/>-->
+<!--&lt;!&ndash;                <field name="shopify_customer_id"/>&ndash;&gt;-->
+            </tree>
+        </field>
+    </record>
+    <record id="action_shopify_partner_form" model="ir.actions.act_window">
+        <field name="name">Customers</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">res.partner</field>
+        <field name="domain">[('is_shopify_customer','=',True)]</field>
+<!--        <field name="view_id" ref="shopify_res_partner_form_view"/>-->
+        <field name="view_mode">form,tree</field>
+        <field name="context">{"search_default_customer":1}</field>
+        <field name="view_id" ref="view_shopify_partner_tree"/>
+        <field name="search_view_id" ref="base.view_res_partner_filter"/>
+        <field name="help" type="html">
+            <div class="oe_empty_shopify_customers">
+                <br/>
+                <br/>
+                <br/>
+                <p>
+                    <b>There are no any Shopify Customer Created yet</b>
+                </p>
+                <p>
+                    You can't create Shopify Customer directly from here.
+                </p>
+                <p>
+                    When order is imported system will automatically create customer in ERP.
+                </p>
+                <p>
+                    Or
+                </p>
+                <p>
+                    You can run Import Customer process.
+                </p>
+            </div>
+        </field>
+    </record>
+    <menuitem id="ept_menu_shopify_partner"
+              action="action_shopify_partner_form"
+              parent="shopify_ept.shopify_menu_item_sales"
+              sequence="11"
+              name="Customers"/>
+</odoo>
