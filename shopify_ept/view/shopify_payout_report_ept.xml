@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="shopify_payout_report_search_view" model="ir.ui.view">
+            <field name="name">Shopify Payout Report Search</field>
+            <field name="model">shopify.payout.report.ept</field>
+            <field name="type">search</field>
+            <field name="arch" type="xml">
+                <search string="Payout Report">
+                    <field name="name"/>
+                    <field name="state"/>
+                    <field name="instance_id"/>
+                    <field name="statement_id"/>
+                    <group expand="0" string="Group By...">
+                        <filter name="instance" string="Instance" context="{'group_by':'instance_id'}"/>
+                        <filter name="status" string="Status" context="{'group_by':'state'}"/>
+                        <filter string="Payout Date" name="order_month" domain="[]"
+                                context="{'group_by':'payout_date'}"/>
+                        <filter name="remaining_reports" string="Remaining Reports"
+                                domain="[('state', '!=', 'closed')]"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="shopify_payout_report_tree_view" model="ir.ui.view">
+            <field name="name">Shopify Payout Report Tree</field>
+            <field name="model">shopify.payout.report.ept</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Shopify Payout Report" decoration-danger="state =='partially_processed'"
+                      decoration-info="state== 'processed' "
+                      decoration-muted="state == 'partially_generated'"
+                      decoration-bf="state == 'generated'"
+                      decoration-success="state == 'closed' " create="false">
+                    <field name="name"/>
+                    <field name="payout_date"/>
+                    <field name="payout_reference_id"/>
+                    <field name="payout_status"/>
+                    <field name="instance_id"/>
+                    <field name="amount"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="shopify_payout_report_form_view" model="ir.ui.view">
+            <field name="name">Shopify Payout Report Tree</field>
+            <field name="model">shopify.payout.report.ept</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Settlement Report" create="false">
+                    <header>
+                        <button name="generate_bank_statement" string="Generate Bank Statement"
+                                attrs="{'invisible': [('statement_id', '!=', False)]}"
+                                class="oe_highlight"
+                                help="Click Here To Generate Bank Statement"
+                                type="object"/>
+                        <button name="generate_remaining_bank_statement" string="Generate Remaining Bank"
+                                attrs="{'invisible': ['|',('state', 'not in',['partially_generated']),('statement_id','=',False)]}"
+                                class="oe_highlight"
+                                help="Click Here To Generate Remaining Bank Statement"
+                                type="object"/>
+                        <button name="process_bank_statement" string="Process Bank Statement"
+                                attrs="{'invisible': [('state', 'not in',['generated','partially_processed'])]}"
+                                class="oe_highlight"
+                                help="Click Here To Process Bank Statement"
+                                type="object"/>
+                        <button name="closed_statement" string="Closed Statement"
+                                attrs="{'invisible':[('state','not in',['processed'])]}"
+                                class="oe_highlight"
+                                type="object"/>
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title" style="width:500px;">
+                            <h1>
+                                <field name="name" class="oe_inline" readonly="1"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="payout_date" readonly="1"/>
+                                <field name="instance_id" readonly="1"/>
+                                <field name="currency_id" readonly="1"/>
+                                <field name="statement_id" readonly="1"/>
+                            </group>
+                            <group>
+                                <field name="payout_reference_id" readonly="1"/>
+                                <field name="payout_status" readonly="1"/>
+                                <field name="amount" readonly="1"/>
+                                <!--<field name="is_all_statement_processed" invisible="1"/>-->
+                            </group>
+                        </group>
+                        <group>
+                            <group>
+                                <field name="is_skip_from_cron"/>
+                            </group>
+                        </group>
+                        <notebook name="shopify_instance">
+                            <page string="Payout Transaction Lines">
+                                <group colspan="4">
+                                    <field name="payout_transaction_ids" nolabel="1">
+                                        <tree decoration-danger="is_remaining_statement==True" limit="50"
+                                              editable="bottom" create="false" readonly="1">
+                                            <field name="transaction_type"/>
+                                            <field name="transaction_id"/>
+                                            <field name="order_id"/>
+                                            <field name="net_amount"/>
+                                            <field name="fee"/>
+                                            <field name="amount"/>
+                                            <field name="is_remaining_statement" invisible="1"/>
+                                        </tree>
+                                        <form string="Payout Transactions">
+                                            <group>
+                                                <group>
+                                                    <field name="payout_id" readonly="1"/>
+                                                    <field name="order_id" readonly="1"/>
+                                                    <field name="source_order_id" readonly="1"/>
+                                                </group>
+                                                <group>
+                                                    <field name="net_amount" readonly="1"/>
+                                                    <field name="fee" readonly="1"/>
+                                                    <field name="amount" readonly="1"/>
+                                                </group>
+                                                <group>
+                                                    <field name="transaction_id" readonly="1"/>
+                                                    <field name="transaction_type" readonly="1"/>
+                                                    <field name="currency_id" readonly="1"/>
+                                                    <field name="source_type" readonly="1"/>
+                                                </group>
+                                            </group>
+                                        </form>
+                                    </field>
+                                </group>
+                            </page>
+                            <page string="Log Lines">
+                                <field name="reconciliation_log_ids" nolabel="1">
+                                    <tree limit="50"
+                                          decoration-danger="is_skipped ==True" editable="bottom" create="false">
+                                        <field name="message" readonly="1"/>
+                                        <field name="payout_transaction_ref" readonly="1"/>
+                                        <field name="is_skipped" invisible="1"/>
+                                        <field name="create_date"/>
+                                    </tree>
+                                </field>
+
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_shopify_payout_report_ept" model="ir.actions.act_window">
+            <field name="name">Shopify Payout Reports</field>
+            <field name="res_model">shopify.payout.report.ept</field>
+<!--            <field name="view_type">form</field>-->
+<!--            <field name="view_mode">tree,form</field>-->
+            <field name="search_view_id" ref="shopify_payout_report_search_view"/>
+            <field name="context">{'search_default_remaining_reports': 1}</field>
+<!--            <field name="view_id" ref="shopify_payout_report_tree_view"/>-->
+        </record>
+
+        <menuitem id="main_menu_shopify_report_ept" name="Reports"
+                  parent="shopify_ept.shopify_instance_menu_item"
+                  groups="account.group_account_user,shopify_ept.group_shopify_manager_ept"
+                  sequence="18"/>
+
+        <menuitem id="menu_shopify_payout_report" name="Payout Reports"
+                  parent="main_menu_shopify_report_ept"
+                  groups="account.group_account_user,shopify_ept.group_shopify_manager_ept"
+                  action="action_shopify_payout_report_ept" sequence="1"/>
+    </data>
+</odoo>

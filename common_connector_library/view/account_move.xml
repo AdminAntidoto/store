@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Added By Dimpal on 5/oct/2019 -->
+    <data>
+        <record model="ir.ui.view" id="view_form_account_move_ept">
+            <field name="name">view_form_account_move_ept</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_move_form"/>
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="//field[@name='journal_id']" position="after">
+                        <field name='global_channel_id' options="{'no_create': True}"/>
+                    </xpath>
+                    <xpath expr="//field[@name='price_unit']" position="after">
+                        <field name="line_tax_amount_percent" invisible="1"/>
+                    </xpath>
+                </data>
+            </field>
+        </record>
+    </data>
+</odoo>

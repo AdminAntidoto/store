@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<!-- Added By Dimpal on 5/oct/2019 -->
+    <data>
+		<record model="ir.ui.view" id="view_stock_picking_ept">
+            <field name="name">view.stock.picking.ept</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="arch" type="xml">
+                <data>
+                	<xpath expr="//page[@name='extra']/group/group[@name='other_infos']/field[@name='company_id']" position="after">
+                		<field name='global_channel_id' options="{'no_create': True}"/>
+                	</xpath>
+                </data>
+            </field>
+        </record>
+     </data>
+</odoo>

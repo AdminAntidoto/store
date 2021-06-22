@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<!-- Added By Dimpal on 5/oct/2019 -->
+    <data>
+		<record model="ir.ui.view" id="view_stock_move_ept">
+            <field name="name">view.stock.move.ept</field>
+            <field name="model">stock.move</field>
+            <field name="inherit_id" ref="stock.view_move_form"/>
+            <field name="arch" type="xml">
+                <data>
+                	<xpath expr="//field[@name='company_id']" position="after">
+                		<field name='global_channel_id' options="{'no_create': True}"/>
+                	</xpath>
+                </data>
+            </field>
+        </record>
+     </data>
+</odoo>
