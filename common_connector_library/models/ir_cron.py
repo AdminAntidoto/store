@@ -1,5 +1,7 @@
-from odoo import models
+# -*- coding: utf-8 -*-
+# See LICENSE file for full copyright and licensing details.
 from datetime import datetime
+from odoo import models
 
 
 class IrCron(models.Model):
@@ -8,16 +10,18 @@ class IrCron(models.Model):
     def try_cron_lock(self):
         """
         To check scheduler status is running or when nextcall from cron id.
-        :return:
         """
         try:
             self._cr.execute("""SELECT id FROM "%s" WHERE id IN %%s FOR UPDATE NOWAIT""" % self._table,
                              [tuple(self.ids)], log_exceptions=False)
             difference = self.nextcall - datetime.now()
-            if not difference.days < 0:
-                days = difference.days * 1440 if difference.days > 0 else 0
+            diff_days = difference.days
+            if not diff_days < 0:
+                days = diff_days * 1440 if diff_days > 0 else 0
                 minutes = int(difference.seconds / 60) + days
                 return {"result": minutes}
         except:
             return {
-                "reason": "This cron task is currently being executed, If you execute this action it may cause duplicate records"}
+                "reason": "This cron task is currently being executed, If you execute this action it may cause "
+                          "duplicate records."
+            }

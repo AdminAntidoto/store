@@ -1,36 +1,39 @@
 # -*- coding: utf-8 -*-
-# Part of Odoo. See LICENSE file for full copyright and licensing details.
+# See LICENSE file for full copyright and licensing details.
 {
     'name': 'Common Connector Library',
-    'version': '13.0.12',
-    'category': 'Sale',
+    'version': '14.0.1.17',
+    'category': 'Sales',
     'license': 'OPL-1',
     'author': 'Emipro Technologies Pvt. Ltd.',
     'website': 'http://www.emiprotechnologies.com',
     'maintainer': 'Emipro Technologies Pvt. Ltd.',
-    'description': """Develope Generalize Method Of Sale Order,
-                      Sale Order Line which is use in any Connector
-                      to Create Sale Order and Sale Order Line.""",
-    'depends': ['delivery', 'sale_stock','account_tax_python'],
-    'data': ['security/ir.model.access.csv', 'view/stock_quant_package_view.xml',
+    'summary': """Develop generalize method to process different operations & auto workflow process to manage
+    order process automatically.""",
+    'depends': ['delivery', 'sale_stock', 'account', 'sale_management'],
+    'data': ['security/ir.model.access.csv',
+             'data/ir_sequence.xml',
+             'data/ir_cron.xml',
+             'view/stock_quant_package_view.xml',
              'view/common_log_book_view.xml',
              'view/account_fiscal_position.xml',
              'view/common_product_brand_view.xml',
              'view/common_product_image_ept.xml',
              'view/product_view.xml',
              'view/product_template.xml',
-             'data/ir_sequence.xml',
-             'data/decimal_precision.xml',
-             'data/ir_cron.xml',
-             'security/res_groups.xml',
-             'view/global_channel_ept.xml',
              'view/sale_order_view.xml',
-             'view/stock_picking.xml',
-             'view/stock_move_view.xml',
-             'view/account_move.xml',
-             'view/account_move_line_view.xml'],
+             'view/sale_workflow_process_view.xml',
+             'data/automatic_workflow_data.xml',
+             'view/common_log_lines_ept.xml',
+            'view/assets.xml',
+    ],
+    'qweb': [
+        'static/src/xml/dashboard_widget.xml',
+    ],
     'installable': True,
     'price': 20.00,
     'currency': 'EUR',
-    'images': ['static/description/Common-Connector-Library-Cover.jpg']
+    'images': ['static/description/Common-Connector-Library-Cover.jpg'],
+    #cloc settings
+    'cloc_exclude': ['**/*.xml',],
 }

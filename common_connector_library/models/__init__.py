@@ -1,4 +1,7 @@
+# coding: utf-8
+# See LICENSE file for full copyright and licensing details.
 from . import res_partner
+from . import sale_workflow_process
 from . import sale_order
 from . import sale_order_line
 from . import product_product
@@ -15,12 +18,7 @@ from . import common_product_image_ept
 from . import common_product_brand_ept
 from . import product_template
 from . import vendor_stock_ept
-from . import update_valuation_entry
-from . import global_channel_ept
 from . import account_move
-from . import account_move_line
-from . import stock_rule
-from . import sale_advance_payment_inv
 from . import ir_cron
-from . import account_tax
 from . import data_queue_mixin_ept
+from . import account_bank_statement_line
