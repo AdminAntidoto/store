@@ -1,0 +1,3 @@
+Odoo Studio: sale.order.form customization
+Odoo Studio: stock.quant.package.form customization
+Odoo Studio: product.product.search.stock.form customization
