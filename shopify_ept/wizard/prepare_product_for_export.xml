@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="export_product_to_shopify_ept" model="ir.ui.view">
+        <field name="name">shopify.export.products.view.ept</field>
+        <field name="model">shopify.prepare.product.for.export.ept</field>
+        <field name="arch" type="xml">
+            <form string="Export Products">
+                <sheet>
+                    <group name="shopify_export_products">
+                        <group>
+                            <field name="export_method" required="1"/>
+                            <field name="shopify_instance_id"
+                                   attrs="{'required':[('export_method','=','direct')],'invisible':[('export_method','!=','direct')]}"
+                                   options="{'no_create':True,'no_create_edit':True}"/>
+                        </group>
+                    </group>
+                    <group>
+                        <div style="color:#000000" id="export_products_note">
+                            <p class="alert alert-warning" role="alert">
+                                <u>
+                                    <h3 style="font-weight:bold;color:#7d5a29">Note :</h3>
+                                </u>
+                                <b>
+                                    <ol attrs="{'invisible':[('export_method','=','direct')]}">
+                                        <li>
+                                            You can use this option, when you want to export the
+                                            details with changes in the current values of the fields
+                                            such as name, description or sku.
+                                        </li>
+                                        <li>
+                                            Products with more than 3 attributes will not be
+                                            exported.
+                                        </li>
+                                        <li>
+                                            Products without Internal Reference (SKU) will not be
+                                            exported.
+                                        </li>
+                                        <li>
+                                            Please do not change in this three columns
+                                            'PRODUCT_TEMPLATE_ID', 'PRODUCT_ID' and 'CATEGORY_ID' in
+                                            CSV file.
+                                        </li>
+                                        <li>
+                                            You can import CSV file here: Shopify => Products
+                                            =>Import Products
+                                        </li>
+                                    </ol>
+                                    <ol attrs="{'invisible':[('export_method','=','csv')]}">
+                                        <li>
+                                            You can use this option, when you want to export the
+                                            details without making changes in the current values of
+                                            the fields such as name, description or sku.
+                                        </li>
+                                        <li>
+                                            Products with more than 3 attributes will not be
+                                            exported.
+                                        </li>
+                                        <li>
+                                            Products without Internal Reference (SKU) will not be
+                                            exported.
+                                        </li>
+                                    </ol>
+                                </b>
+                            </p>
+                        </div>
+                    </group>
+
+                    <footer>
+                        <button name="prepare_product_for_export"
+                                string="Export" type="object"
+                                class="oe_highlight"/>
+                        <button string="Cancel" class="oe_highlight" special="cancel"/>
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="shopify_import_products_from_csv_ept" model="ir.ui.view">
+        <field name="name">shopify.import.products.from.csv.view.ept</field>
+        <field name="model">shopify.prepare.product.for.export.ept</field>
+        <field name="arch" type="xml">
+            <form string="Sync Products">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="shopify_instance_id" required="True"
+                                   options="{'no_create':True,'no_create_edit':True}"/>
+                            <field name="file_name" invisible="1"/>
+                            <field name="choose_file" filename="file_name"/>
+                        </group>
+                    </group>
+                    <footer>
+                        <button name="import_products_from_csv" string="Import Products from CSV"
+                                type="object" class="oe_highlight"/>
+                        <button string="Cancel" class="oe_highlight" special="cancel"/>
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <act_window name="Shopify - Export Products" res_model="shopify.prepare.product.for.export.ept"
+                binding_model="product.template" view_mode="form" target="new"
+                id="action_shopify_export_odoo_products_ept"
+                view_id="shopify_ept.export_product_to_shopify_ept"/>
+
+    <record id="action_shopify_import_products_ept" model="ir.actions.act_window">
+        <field name="name">Import Products</field>
+        <field name="res_model">shopify.prepare.product.for.export.ept</field>
+        <field name="view_id" ref="shopify_ept.shopify_import_products_from_csv_ept"/>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem id="menuitem_shopify_import_products_ept" name="Import Products"
+              parent="shopify_ept.menu_item_parent_shopify_products_ept"
+              action="action_shopify_import_products_ept"/>
+
+</odoo>

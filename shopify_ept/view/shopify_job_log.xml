@@ -1,0 +1,40 @@
+<?xml version="1.0" ?>
+<odoo>
+	<data>
+
+		<record id="inherit_view_of_common_log_book_ept_tree" model="ir.ui.view">
+			<field name="name">Shopify Instance in Log book Tree</field>
+			<field name="model">common.log.book.ept</field>
+			<field name="inherit_id"
+				ref="common_connector_library.action_common_log_book_ept_tree" />
+			<field name="arch" type="xml">
+				<field name="create_date" position="after">
+					<field name="shopify_instance_id">
+					</field>
+				</field>
+			</field>
+		</record>
+
+		<record id="inherit_view_of_common_log_book_ept_from" model="ir.ui.view">
+			<field name="name">Shopify Instance in Log book Form</field>
+			<field name="model">common.log.book.ept</field>
+			<field name="inherit_id"
+				ref="common_connector_library.action_common_log_book_ept_form" />
+			<field name="arch" type="xml">
+				<field name="active" position="after">
+					<field name="shopify_instance_id" readonly="1">
+					</field>
+				</field>
+			</field>
+		</record>
+
+		<menuitem id="shopify_log_ept" name="Log Details"
+			parent="shopify_ept.shopify_instance_menu_item" sequence="20" />
+
+		<menuitem id="shopify_mismatch_ept" name="Mismatch Details"
+			parent="shopify_ept.shopify_log_ept"
+				  action="shopify_ept.action_common_log_book_ept_shopify_instances"
+			sequence="26" />
+
+	</data>
+</odoo>
