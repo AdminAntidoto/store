@@ -29,3 +29,6 @@ class AccountMove(models.Model):
             'payment_method_id': work_flow_process_record.inbound_payment_method_id.id,
             'partner_type': 'customer'
         }
+
+
+        # modelo
